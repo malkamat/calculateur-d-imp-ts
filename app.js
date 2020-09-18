@@ -1,24 +1,18 @@
-const revenuesNet = document.querySelector("#revenues-net")
-let revenuesBrut = 0
+const tableauTranche2020 = [ 
+    {max: 10064, taux: 0},
+    {max: 25659, taux: 11},
+    {max: 73369, taux: 30},
+    {max: 157806, taux: 41},
+    {max: Infinity, taux: 45},
+]
+let SituationFamilialActuelle = ""
+const SituationFamilial = document.querySelectorAll(".check-box")
 
-revenuesNet.addEventListener("input", calculer => {
-    if(isNaN(revenuesNet.value)) {
-        console.log("erreur")
-    } else if (revenuesNet.value <= 10064) {
-        revenuesBrut = revenuesNet.value
-      
-    } else if (revenuesNet.value > 10064 && revenuesNet.value <= 25659) {
-        revenuesBrut = revenuesNet.value - ((revenuesNet.value/100)*11)
-   
-    } else if (revenuesNet.value > 25659 && revenuesNet.value <= 73369) {
-        revenuesBrut = revenuesNet.value - ((revenuesNet.value/100)*30)
-     
-    } else if (revenuesNet.value > 74517 && revenuesNet.value <= 157806) {
-        revenuesBrut = revenuesNet.value - ((revenuesNet.value/100)*41)
-     
-    }else{
-        revenuesBrut = revenuesNet.value - ((revenuesNet.value/100)*45)
+// boucle dans les checkbox pour récupérer la valeur de SituationFamilialActuelle
 
-    }  
-    console.log(Math.floor(revenuesBrut))
-})
+for(i = 0; i < SituationFamilial.length; i++) {
+    SituationFamilial[i].addEventListener("input", function(e) {
+        SituationFamilialActuelle = e.target.id
+    })
+}
+
