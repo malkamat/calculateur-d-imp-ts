@@ -14,14 +14,30 @@
 
         <div class="situation">
             <h2>Quelle est votre situation familial actuelle ?</h2>
-            <div class="checkbox">
+            <div class="checkbox-celib">
                 <label for="">célibataire</label>
                 <input class="check-box" type="radio" name="celib" id="celib">
             </div>
-            <div class="checkbox">
+            <div class="checkbox-marie">
                 <label for="">marié(e)</label>
                 <input class="check-box" type="radio" name="celib" id="marie">
             </div>
+
+            <div class="enfants">
+                 <label for="enfants-select">--Indiquez le nombre d'enfants à charges--</label>
+
+            <select name="enfants" id="enfants-select">
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+            </select>
+            </div>
+
+           
 
         </div>
 
@@ -30,7 +46,7 @@
             <input type="text" name="salaire-brut" id="salaire-brut">
         </div>
 
-        <div class="button_cont"><a class="example_d" >Calucler</a></div>
+        <div class="button_cont"><a class="example_d">Calucler</a></div>
 
         <div class="salaire-net">
             <h3>entrez le salaire net</h3>
