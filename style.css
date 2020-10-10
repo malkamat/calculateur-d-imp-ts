@@ -21,8 +21,8 @@ body {
 }
 
 .app {
-    width: 550px;
-    height: 650px;
+    width: 600px;
+    height: 98vh;
     background-color: #f1f1f1;
     display: grid;
     grid-template: repeat(5, 1fr) / repeat(3, 1fr);
@@ -80,7 +80,7 @@ background: linear-gradient(to top,  #2b2f3a, #1D2B64); /* W3C, IE 10+/ Edge, Fi
     margin-left: 10px;
 }
 
-.button_cont {
+.bouton-calculer {
 
     cursor: pointer;
     grid-area: 4 / 2 / 4 / 2;

@@ -29,8 +29,13 @@ let nbDeParts = 0
 let salaireNet = 0
 let salaireBrut = 0
 let nbEnfants = 0
+let impot = 0
+let impot2 = 0
 const SituationFamilial = document.querySelectorAll(".check-box")
 const SituationFamilialEnfants = document.querySelector("#enfants-select")
+const salaireBrutInput = document.querySelector("#salaire-brut")
+const salaireNetInput = document.querySelector("#salaire-net")
+const boutonCalcul = document.querySelector(".bouton-calculer")
 
 // boucle dans les checkbox pour récupérer la valeur de SituationFamilialActuelle
 
@@ -40,12 +45,12 @@ for (i = 0; i < SituationFamilial.length; i++) {
     })
 }
 
-class CalculAvecNet {
-    constructor(nbDeParts, salaireNet) {
-        this.nbDeParts = nbDeParts
-        this.salaireNet = salaireNet
-    }
-}
+salaireBrutInput.addEventListener("input", (e) => {
+
+    salaireBrut =  parseFloat(e.target.value)
+})
+
+
 
 const calculerNbDePartsEnfants = () => {
     if (SituationFamilialEnfants.value <= 2) {
@@ -67,49 +72,43 @@ const calculerNbDePartsTotal = () => {
     console.log(nbDeParts);
 }
 
+
 const caculerNet = () => {
-    // const objetx = new CalculAvecNet(nbDeParts, 32000)
+    calculerNbDePartsEnfants()
+    calculerNbDePartsTotal()
+     salaireBrut = salaireBrut/nbDeParts
+    for(const i in tableauTranche2020) {
 
-}
-
-// for ( i = 0 ; i < tableauTranche2020.length ; i++ ) {
-//         console.log(tableauTranche2020[i].tranche);
-//         if(75000 < tableauTranche2020[i].max) {
-//             console.log(75000 - tableauTranche2020[i - 1].max);
-//         }
-
-
-//     }
-// tableauTranche2020.forEach(el => {
-//     let test = 32000
-//     if (test > el.max && test > 10064) {
-//         test -= el.max
-//         console.log( test);
-//     } else if (test < el.max) {
-
-//     }
-
-
-// });
-
-
-let test = 75050
-let impot = 0
-let impot2 = 0
-for(const i in tableauTranche2020) {
-
-    if(test > tableauTranche2020[i].max) {
-        impot += tableauTranche2020[i].tranche * tableauTranche2020[i].taux
-
-    } 
-
-}    
-
-for (const i in tableauTranche2020) {
-    if (tableauTranche2020[i].max > test) {
-                impot2 += (test - tableauTranche2020[i - 1].max) * tableauTranche2020[i].taux
-
-       break
-    } 
+        if(salaireBrut > tableauTranche2020[i].max) {
+            impot += tableauTranche2020[i].tranche * tableauTranche2020[i].taux
     
+        } 
+    
+    }    
+    
+    for (const i in tableauTranche2020) {
+        if (tableauTranche2020[i].max > salaireBrut) {
+                    impot2 += (salaireBrut - tableauTranche2020[i - 1].max) * tableauTranche2020[i].taux
+    
+           break
+           
+        } 
+        
+    }
+console.log((impot2 + impot) * nbDeParts)
+
+
 }
+
+
+
+
+
+boutonCalcul.addEventListener("click", () => {
+    if(salaireBrut !== 0) {
+        caculerNet()
+        salaireBrutInput.value = 0
+       
+    }
+
+})
