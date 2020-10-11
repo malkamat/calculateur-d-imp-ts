@@ -36,6 +36,7 @@ const SituationFamilialEnfants = document.querySelector("#enfants-select")
 const salaireBrutInput = document.querySelector("#salaire-brut")
 const salaireNetInput = document.querySelector("#salaire-net")
 const boutonCalcul = document.querySelector(".bouton-calculer")
+const resultat = document.querySelector(".resultat")
 
 // boucle dans les checkbox pour récupérer la valeur de SituationFamilialActuelle
 
@@ -46,8 +47,7 @@ for (i = 0; i < SituationFamilial.length; i++) {
 }
 
 salaireBrutInput.addEventListener("input", (e) => {
-
-    salaireBrut =  parseFloat(e.target.value)
+    salaireBrut = parseFloat(e.target.value)
 })
 
 
@@ -63,52 +63,57 @@ const calculerNbDePartsEnfants = () => {
 const calculerNbDePartsTotal = () => {
     if (SituationFamilialActuelle == "celib") {
         nbDeParts = 1
-        calculerNbDePartsEnfants()
+
     } else if (SituationFamilialActuelle == "marie") {
         nbDeParts = 2
-        calculerNbDePartsEnfants()
+
     }
 
-    console.log(nbDeParts);
+ 
 }
 
 
 const caculerNet = () => {
-    calculerNbDePartsEnfants()
     calculerNbDePartsTotal()
-     salaireBrut = salaireBrut/nbDeParts
-    for(const i in tableauTranche2020) {
+    calculerNbDePartsEnfants()
+    if( nbDeParts !==0 ) {
+        salaireBrut = salaireBrut / nbDeParts
+    for (const i in tableauTranche2020) {
 
-        if(salaireBrut > tableauTranche2020[i].max) {
+        if (salaireBrut > tableauTranche2020[i].max) {
             impot += tableauTranche2020[i].tranche * tableauTranche2020[i].taux
-    
-        } 
-    
-    }    
-    
+
+        }
+
+    }
+
     for (const i in tableauTranche2020) {
         if (tableauTranche2020[i].max > salaireBrut) {
-                    impot2 += (salaireBrut - tableauTranche2020[i - 1].max) * tableauTranche2020[i].taux
-    
-           break
-           
-        } 
-        
+            impot2 += (salaireBrut - tableauTranche2020[i - 1].max) * tableauTranche2020[i].taux
+
+            break
+
+        }
+
     }
-console.log((impot2 + impot) * nbDeParts)
+    }
+    
+
 
 
 }
 
 
-
-
-
 boutonCalcul.addEventListener("click", () => {
-    if(salaireBrut !== 0) {
+    if (salaireBrut !== 0) {
         caculerNet()
+        console.log(nbDeParts);
         salaireBrutInput.value = 0
-       
+        resultat.innerHTML = `Vos revenus net d'impôts s'élévent à ${Math.floor((salaireBrut * nbDeParts) - ((impot2 + impot) * nbDeParts))} €<br><br><a  href="#">voir plus de détails</a>`
+        salaireBrut = " "
+        impot = 0
+        impot2 = 0
+        nbDeParts = 0
     }
 
 })
