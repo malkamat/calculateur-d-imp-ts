@@ -1,3 +1,4 @@
+//déclarations des variables globals
 const tableauTranche2020 = [{
         max: 10064,
         taux: 1,
@@ -37,6 +38,9 @@ const salaireBrutInput = document.querySelector("#salaire-brut")
 const salaireNetInput = document.querySelector("#salaire-net")
 const boutonCalcul = document.querySelector(".bouton-calculer")
 const resultat = document.querySelector(".resultat")
+const modalButton = document.querySelector(".modal-btn")
+const modalBg = document.querySelector(".modal-bg")
+
 
 // boucle dans les checkbox pour récupérer la valeur de SituationFamilialActuelle
 
@@ -46,12 +50,14 @@ for (i = 0; i < SituationFamilial.length; i++) {
     })
 }
 
+// parse d'une chaine de caratcte à un nobre et récuperation de la valeur du salaire net 
+
 salaireBrutInput.addEventListener("input", (e) => {
     salaireBrut = parseFloat(e.target.value)
 })
 
 
-
+// fonction pour récupérer le nombre d'enfants et cacuer le nombre de parts qui en découle
 const calculerNbDePartsEnfants = () => {
     if (SituationFamilialEnfants.value <= 2) {
         nbDeParts += SituationFamilialEnfants.value / 2
@@ -59,8 +65,8 @@ const calculerNbDePartsEnfants = () => {
         nbDeParts += SituationFamilialEnfants.value - 1
     }
 }
-
-const calculerNbDePartsTotal = () => {
+// Calculs du nombre de parts adultes (couple ou célibataire en fonction de ce que l'utilisateur à séléctionner dans les checkbox)
+const calculerNbDePartsAdulte = () => {
     if (SituationFamilialActuelle == "celib") {
         nbDeParts = 1
 
@@ -69,37 +75,35 @@ const calculerNbDePartsTotal = () => {
 
     }
 
- 
+
 }
 
 
+// fonction pour calculer le salaire net d'impot depuis le salaire net 
+
 const caculerNet = () => {
-    calculerNbDePartsTotal()
+    calculerNbDePartsAdulte()
     calculerNbDePartsEnfants()
-    if( nbDeParts !==0 ) {
+    if (nbDeParts !== 0) {
         salaireBrut = salaireBrut / nbDeParts
-    for (const i in tableauTranche2020) {
+        for (const i in tableauTranche2020) {
 
-        if (salaireBrut > tableauTranche2020[i].max) {
-            impot += tableauTranche2020[i].tranche * tableauTranche2020[i].taux
+            if (salaireBrut > tableauTranche2020[i].max) {
+                impot += tableauTranche2020[i].tranche * tableauTranche2020[i].taux
 
-        }
-
-    }
-
-    for (const i in tableauTranche2020) {
-        if (tableauTranche2020[i].max > salaireBrut) {
-            impot2 += (salaireBrut - tableauTranche2020[i - 1].max) * tableauTranche2020[i].taux
-
-            break
+            }
 
         }
 
-    }
-    }
-    
+        for (const i in tableauTranche2020) {
+            if (tableauTranche2020[i].max > salaireBrut) {
+                impot2 += (salaireBrut - tableauTranche2020[i - 1].max) * tableauTranche2020[i].taux
+                break
 
+            }
 
+        }
+    }
 
 }
 
@@ -107,13 +111,24 @@ const caculerNet = () => {
 boutonCalcul.addEventListener("click", () => {
     if (salaireBrut !== 0) {
         caculerNet()
-        console.log(nbDeParts);
-        salaireBrutInput.value = 0
-        resultat.innerHTML = `Vos revenus net d'impôts s'élévent à ${Math.floor((salaireBrut * nbDeParts) - ((impot2 + impot) * nbDeParts))} €<br><br><a  href="#">voir plus de détails</a>`
+        salaireBrutInput.value = null
+        resultat.innerHTML = `Vos revenus net d'impôts s'élévent à ${Math.floor((salaireBrut * nbDeParts) - ((impot2 + impot) * nbDeParts))} €<br><br><button class="modal-btn">voir plus de détails</button>`
         salaireBrut = " "
         impot = 0
         impot2 = 0
         nbDeParts = 0
     }
+    // si l'utilisateur clique sur le bouton plus d'info on ouvre la boite modal
+   
+    modalButton.addEventListener("click", (e) => {
+        modalBg.classList.add("bg-active")
+        console.log(e)
+    })
+})
 
+
+
+
+window.addEventListener("click", (e) => {
+    console.log(e);
 })
